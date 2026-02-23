@@ -3,396 +3,182 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nonsense Member</title>
+
+<link rel="icon" type="image/png" href="https://img5.pic.in.th/file/secure-sv1/Nonsense-1.png">
+
+<title>Nonsense</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    color: white;
-    background: 
-        linear-gradient(rgba(0,10,30,0.8), rgba(0,10,30,0.8)),
-        url("https://img2.pic.in.th/WELCOME-2.png");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    display: flex;
-    justify-content: center;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
 }
 
-.container {
-    width: 90%;
-    max-width: 600px;
-}
-/* ===== RGB + Glow + Float ===== */
-.title {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 48px;
-    font-weight: bold;
-    background: linear-gradient(
-        90deg,
-        #00f0ff,
-        #00ff88,
-        #00aaff,
-        #00f0ff
-    );
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: 
-        gradientMove 5s ease infinite,
-        glow 2s ease-in-out infinite alternate,
-        float 3s ease-in-out infinite;
+body{
+    height:100vh;
+    background:#03060d;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
 }
 
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+/* Canvas ไฟ */
+canvas{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:0;
 }
 
-@keyframes glow {
-    from { text-shadow: 0 0 10px #00f0ff; }
-    to { text-shadow: 0 0 30px #00ffff; }
+/* Content */
+.hero{
+    position:relative;
+    z-index:2;
+    text-align:center;
 }
 
-@keyframes float {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
+.logo{
+    width:180px;
+    margin-bottom:30px;
+    filter: drop-shadow(0 0 20px #00bfff);
+    animation: logoGlow 2s infinite alternate ease-in-out;
 }
 
-.search-box {
-    margin-bottom: 15px;
+h1{
+    font-size:70px;
+    letter-spacing:6px;
+    color:#cceeff;
+    text-shadow:
+        0 0 20px #00bfff,
+        0 0 40px #0099ff,
+        0 0 80px #0066ff;
+    animation: textPulse 2s infinite alternate ease-in-out;
 }
 
-.search-box input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    outline: none;
+p{
+    margin:20px 0 40px;
+    color:#66ccff;
+    letter-spacing:3px;
 }
 
-.card {
-    background: #c4dbff70;
-    padding: 10px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+.btn{
+    padding:15px 45px;
+    border:1px solid #00bfff;
+    color:#00bfff;
+    text-decoration:none;
+    border-radius:8px;
+    transition:0.3s;
 }
 
-.card img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+.btn:hover{
+    background:#00bfff;
+    color:#000;
+    box-shadow:0 0 25px #00bfff;
 }
 
-.info {
-    flex: 1;
-    margin-left: 10px;
+/* Animations */
+@keyframes logoGlow{
+    from{ filter: drop-shadow(0 0 15px #0099ff); }
+    to{ filter: drop-shadow(0 0 35px #00ccff); }
 }
 
-.name {
-    font-weight: bold;
+@keyframes textPulse{
+    from{
+        text-shadow:
+            0 0 20px #00bfff,
+            0 0 40px #0099ff;
+    }
+    to{
+        text-shadow:
+            0 0 40px #00ccff,
+            0 0 80px #0088ff,
+            0 0 120px #0055ff;
+    }
 }
 
-.sub {
-    font-size: 12px;
-    color: #9fb3b8;
-}
-
-.fb-btn {
-    background: #3b5998;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    color: white;
-    text-decoration: none;
-}
-
-.buttons {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.buttons button {
-    background: #3a4b52;
-    border: none;
-    padding: 8px 15px;
-    margin: 3px;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-}
-
-.footer {
-    text-align: center;
-    font-size: 12px;
-    margin-top: 20px;
-    color: #c4b9ff;
+/* Responsive */
+@media(max-width:768px){
+    h1{ font-size:40px; }
+    .logo{ width:130px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1 class="title">Nonsense Member</h1>
+<canvas id="fireCanvas"></canvas>
 
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="ค้นหาชื่อ...">
-    </div>
-
-    <!-- รายชื่อสมาชิก -->
-    
-    <!-- คัดลอกรายชื่อคุณทั้งหมด -->
-    
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Snow Winterfell</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/snow.wtfsmp?locale=th_TH" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Ochin Zewell</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/ochin.temgraph?locale=th_TH" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Moto Godyouknow</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/Moto.ImperialSermua" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Fadel Godyouknow</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/fadel.helgarost" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Bentz Nonsense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/profile.php?id=100088271831784" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Senki Nonsense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/sen.kuraiya" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Argo Nonsense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/profile.php?id=61565378776783" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Gobelz Nonsense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/profile.php?id=61588500515557#" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Tunder Zewell</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/profile.php?id=61584908198081" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Pangping Nonsense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/share/1NsXkqkXjb/" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">MarCo NonSense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/share/1SjN7j17C2/" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Blacklion Nonsense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/saylom.blackway" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">TER Nonsense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.instagram.com/ter_papawin?igsh=MThqbXl5dXRtdWNnMQ%3D%3D&utm_source=qr" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Nongsecret Nonsense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/nong.secret.frost" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Minje Nonsense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/nitirat.thammawart" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <div class="card">
-        <img src="https://img5.pic.in.th/file/secure-sv1/Nonsense_Logo_1.png">
-        <div class="info">
-            <div class="name">Mia Nonsense</div>
-            <div class="sub">Facebook</div>
-        </div>
-        <a href="https://www.facebook.com/share/1DaYPLfF3J/" target="_blank" class="fb-btn">f</a>
-    </div>
-
-    <!-- ปุ่ม -->
-    <div class="buttons">
-        <button id="prevBtn">ก่อนหน้า</button>
-        <span id="page-info"></span>
-        <button id="nextBtn">ถัดไป</button>
-    </div>
-
-    <div class="footer">
-        Design by Nonsense | Developed by Moto Godyouknow © 2026
-    </div>
+<div class="hero">
+    <img src="https://img2.pic.in.th/IMPERIAL.png" class="logo">
+    <h1>𝑵𝑶𝑵𝑺𝑬𝑵𝑺𝑬</h1>
+    <p>𝑁𝑂𝑁𝑆𝐸𝑁𝑆𝐸 𝑀𝐸𝑀𝐵𝐸𝑅 𝐿𝐼𝑆𝑇</p>
+    <a href="members.html" class="btn">𝐕𝐈𝐄𝐖 𝐌𝐄𝐌𝐁𝐄𝐑 𝐋𝐈𝐒𝐓 ✈</a>
 </div>
 
 <script>
-const searchInput = document.getElementById("searchInput");
-const cards = document.querySelectorAll(".card");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const pageInfo = document.getElementById("page-info");
+const canvas = document.getElementById("fireCanvas");
+const ctx = canvas.getContext("2d");
 
-let currentPage = 1;
-const cardsPerPage = 5;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-function showPage(page) {
-    const start = (page - 1) * cardsPerPage;
-    const end = start + cardsPerPage;
+let particles = [];
 
-    cards.forEach((card, index) => {
-        card.style.display = (index >= start && index < end) ? "flex" : "none";
+class Particle{
+    constructor(){
+        this.x = Math.random()*canvas.width;
+        this.y = canvas.height;
+        this.size = Math.random()*4+2;
+        this.speedY = Math.random()*2+1;
+        this.opacity = 1;
+    }
+
+    update(){
+        this.y -= this.speedY;
+        this.opacity -= 0.01;
+    }
+
+    draw(){
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(0,180,255,"+this.opacity+")";
+        ctx.shadowColor = "#00bfff";
+        ctx.shadowBlur = 15;
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+        ctx.fill();
+    }
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    if(particles.length < 150){
+        particles.push(new Particle());
+    }
+
+    particles.forEach((p,i)=>{
+        p.update();
+        p.draw();
+        if(p.opacity<=0){
+            particles.splice(i,1);
+        }
     });
 
-    const totalPages = Math.ceil(cards.length / cardsPerPage);
-    pageInfo.textContent = `หน้า ${currentPage} จาก ${totalPages}`;
-
-    prevBtn.disabled = currentPage === 1;
-    nextBtn.disabled = currentPage === totalPages;
+    requestAnimationFrame(animate);
 }
 
-nextBtn.addEventListener("click", () => {
-    const totalPages = Math.ceil(cards.length / cardsPerPage);
-    if (currentPage < totalPages) {
-        currentPage++;
-        showPage(currentPage);
-    }
-});
+animate();
 
-prevBtn.addEventListener("click", () => {
-    if (currentPage > 1) {
-        currentPage--;
-        showPage(currentPage);
-    }
+window.addEventListener("resize",()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 });
-
-searchInput.addEventListener("keyup", function() {
-    let value = this.value.toLowerCase();
-    cards.forEach(card => {
-        let name = card.querySelector(".name").textContent.toLowerCase();
-        card.style.display = name.includes(value) ? "flex" : "none";
-    });
-});
-
-showPage(currentPage);
 </script>
-<style>
-.snowflake {
-    position: fixed;
-    top: -10px;
-    color: white;
-    pointer-events: none;
-    z-index: 9999;
-    animation: fall linear forwards;
-}
 
-@keyframes fall {
-    to {
-        transform: translateY(100vh);
-    }
-}
-</style>
-
-<script>
-function createSnow() {
-    const snow = document.createElement("div");
-    snow.classList.add("snowflake");
-    snow.innerHTML = "❄";
-
-    snow.style.left = Math.random() * window.innerWidth + "px";
-    snow.style.opacity = Math.random();
-    snow.style.fontSize = (Math.random() * 10 + 10) + "px";
-    snow.style.animationDuration = (Math.random() * 4 + 4) + "s";
-
-    document.body.appendChild(snow);
-
-    setTimeout(() => {
-        snow.remove();
-    }, 8000);
-}
-
-setInterval(createSnow, 120);
-</script>
 </body>
 </html>
